@@ -14,9 +14,14 @@ const options = {
 const uri = process.env.DATABASE;
 
 const connectWithDB = () => {
-  mongoose.connect(uri, options).then(() => {
-    console.log("database connection succefull");
-  });
+  mongoose
+    .connect(uri, options)
+    .then(() => {
+      console.log("database connection succefull");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 module.exports = connectWithDB;
