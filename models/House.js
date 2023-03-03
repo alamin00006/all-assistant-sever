@@ -6,11 +6,24 @@ const houseSchema = mongoose.Schema(
     bedRoomInfo: {
       type: Number,
       required: true,
+      min: [1, "Bed Room Info can't be negative"],
+      validate: {
+        validator: (value) => {
+          const isInteger = Number.isInteger(value);
+          if (isInteger) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
+      message: "Bed Room Info must be an Integer",
     },
     floorLevel: {
       type: String,
       required: true,
     },
+
     division: {
       type: String,
       required: true,
@@ -23,20 +36,74 @@ const houseSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    totalRentRoom: {
+      type: String,
+      required: true,
+    },
+
     spaceSize: {
       type: Number,
       required: true,
+      min: [1, "Space Size Info can't be negative"],
+      validate: {
+        validator: (value) => {
+          const isInteger = Number.isInteger(value);
+          if (isInteger) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
+      message: "Space Size Info must be an Integer",
     },
     commonBathRoom: {
       type: Number,
+      min: [0, "Common Bath Room Info can't be negative"],
+      validate: {
+        validator: (value) => {
+          const isInteger = Number.isInteger(value);
+          if (isInteger) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
+      message: "Space Size Info must be an Integer",
       default: "N/A",
     },
     attachedBathRoom: {
       type: Number,
+      min: [0, "Attached Bath Room Info can't be negative"],
+      validate: {
+        validator: (value) => {
+          const isInteger = Number.isInteger(value);
+          if (isInteger) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
+      message: "Space Size Info must be an Integer",
       default: "N/A",
     },
+
     balcony: {
       type: Number,
+      min: [0, "Balcony Info can't be negative"],
+      validate: {
+        validator: (value) => {
+          const isInteger = Number.isInteger(value);
+          if (isInteger) {
+            return true;
+          } else {
+            return false;
+          }
+        },
+      },
+      message: "Space Size Info must be an Integer",
       default: "N/A",
     },
     propertyCondition: {
@@ -71,7 +138,7 @@ const houseSchema = mongoose.Schema(
     rentPrice: {
       type: Number,
       required: true,
-      min: [0, "Rent Price can't be negative"],
+      min: [1, "Rent Price can't be negative"],
       validate: {
         validator: (value) => {
           const isInteger = Number.isInteger(value);
@@ -87,7 +154,7 @@ const houseSchema = mongoose.Schema(
     deposit: {
       type: Number,
       required: true,
-      min: [0, "deposit can't be negative"],
+      min: [1, "deposit can't be negative"],
       validate: {
         validator: (value) => {
           const isInteger = Number.isInteger(value);
@@ -231,6 +298,10 @@ const houseSchema = mongoose.Schema(
         ref: "Category",
         required: true,
       },
+    },
+    houseDetailsAddress: {
+      type: String,
+      required: true,
     },
     houseImage: {
       type: Array,

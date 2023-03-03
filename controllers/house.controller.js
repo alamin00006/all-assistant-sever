@@ -15,6 +15,7 @@ exports.createHouse = async (req, res) => {
       division: req.body.division,
       district: req.body.district,
       upazila: req.body.upazila,
+      totalRentRoom: req.body.totalRentRoom,
       spaceSize: req.body.spaceSize,
       commonBathRoom: req.body.commonBathRoom,
       attachedBathRoom: req.body.attachedBathRoom,
@@ -39,11 +40,12 @@ exports.createHouse = async (req, res) => {
       ipsConnection: req.body.ipsConnection,
       parkingSpace: req.body.parkingSpace,
       floorType: req.body.floorType,
+
       category: {
         categoryName: categoryParse.categoryName,
         category_id: categoryParse.category_id,
       },
-
+      houseDetailsAddress: req.body.houseDetailsAddress,
       houseImage: imgPath,
     });
 
@@ -73,13 +75,28 @@ exports.createHouse = async (req, res) => {
 
 exports.getHouses = async (req, res, next) => {
   try {
-    const products = await House.find({});
+    const { division, district, upazila } = req.query;
+    // console.log(req.query);
 
-    res.status(200).json({
-      status: "success",
-      message: "data get Success",
-      data: products,
-    });
+    if (division || district || upazila) {
+      const products = await House.find(
+        { division: division },
+        { district: district },
+        { upazila: upazila }
+      );
+      res.status(200).json({
+        status: "success",
+        message: "data get Success",
+        data: products,
+      });
+    } else {
+      const products = await House.find({});
+      res.status(200).json({
+        status: "success",
+        message: "data get Success",
+        data: products,
+      });
+    }
   } catch (error) {
     res.status(400).json({
       status: "failed",
