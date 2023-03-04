@@ -1,25 +1,20 @@
-const House = require("../models/House");
+const Hotel = require("../models/Hotel");
 const fs = require("fs");
 const path = require("path");
 const dirPath = path.join(__dirname, "../public/uploads");
 
-exports.createHouse = async (req, res) => {
+exports.createHotel = async (req, res) => {
   try {
-    const imgPath = req?.files?.houseImage?.map((img) => img.path);
-    const house = new House({
+    const imgPath = req?.files?.hotelImage?.map((img) => img.path);
+    const hotel = new Hotel({
       bedRoomInfo: req.body.bedRoomInfo,
       floorLevel: req.body.floorLevel,
       division: req.body.division,
       district: req.body.district,
       upazila: req.body.upazila,
       totalRentRoom: req.body.totalRentRoom,
-      spaceSize: req.body.spaceSize,
-      commonBathRoom: req.body.commonBathRoom,
       attachedBathRoom: req.body.attachedBathRoom,
       balcony: req.body.balcony,
-      propertyCondition: req.body.propertyCondition,
-      facing: req.body.facing,
-      availableFrom: req.body.availableFrom,
       rentPriceTitle: req.body.rentPriceTitle,
       rentPrice: req.body.rentPrice,
       deposit: req.body.deposit,
@@ -30,23 +25,21 @@ exports.createHouse = async (req, res) => {
       furnishing: req.body.furnishing,
       gasSupply: req.body.gasSupply,
       ccTvCamera: req.body.ccTvCamera,
-      storeRoom: req.body.storeRoom,
       lift: req.body.lift,
       waterSupply: req.body.waterSupply,
       securityGuard: req.body.securityGuard,
       ipsConnection: req.body.ipsConnection,
       parkingSpace: req.body.parkingSpace,
       floorType: req.body.floorType,
-      categoryName: req.body.categoryName,
-      houseDetailsAddress: req.body.houseDetailsAddress,
-      houseImage: imgPath,
+      hotelDetailsAddress: req.body.houseDetailsAddress,
+      hotelImage: imgPath,
     });
 
-    const result = await house.save();
+    const result = await hotel.save();
 
     res.status(200).json({
       status: "success",
-      message: "House Upload Successfully",
+      message: "Hotel Upload Successfully",
       data: result,
     });
   } catch (error) {
@@ -58,25 +51,15 @@ exports.createHouse = async (req, res) => {
   }
 };
 
-exports.getHouses = async (req, res, next) => {
+exports.getHotels = async (req, res, next) => {
   try {
-    const {
-      division,
-      district,
-      upazila,
-      categoryName,
-      rentPrice,
-      totalRentRoom,
-    } = req.query;
+    const { division, district, upazila, rentPrice, totalRentRoom } = req.query;
     console.log(req.query);
 
     if ((division, district, upazila)) {
       const query =
         ({ division: division }, { district: district }, { upazila: upazila });
-      const houses = await House.find(query)
-        .where({
-          categoryName: categoryName,
-        })
+      const hotels = await Hotel.find(query)
         .where("rentPrice")
         .gte(rentPrice)
         .where({ totalRentRoom: totalRentRoom });
@@ -84,13 +67,10 @@ exports.getHouses = async (req, res, next) => {
       res.status(200).json({
         status: "success",
         message: "data get Success",
-        data: houses,
+        data: hotels,
       });
-    } else if ((categoryName, rentPrice, totalRentRoom)) {
-      const houses = await House.find({})
-        .where({
-          categoryName: categoryName,
-        })
+    } else if ((rentPrice, totalRentRoom)) {
+      const hotels = await Hotel.find({})
         .where("rentPrice")
         .gte(rentPrice)
         .where({ totalRentRoom: totalRentRoom });
@@ -98,15 +78,15 @@ exports.getHouses = async (req, res, next) => {
       res.status(200).json({
         status: "success",
         message: "data get Success",
-        data: houses,
+        data: hotels,
       });
     } else {
-      const houses = await House.find({});
+      const hotels = await Hotel.find({});
 
       res.status(200).json({
         status: "success",
         message: "data get Success",
-        data: houses,
+        data: hotels,
       });
     }
   } catch (error) {
@@ -118,15 +98,15 @@ exports.getHouses = async (req, res, next) => {
   }
 };
 
-exports.getHouseDetails = async (req, res, next) => {
+exports.getHotelDetails = async (req, res, next) => {
   try {
     const id = req.params.id;
 
-    const house = await House.findById(id);
+    const hotel = await Hotel.findById(id);
     res.status(200).json({
       status: "success",
       message: "data get Success",
-      data: house,
+      data: hotel,
     });
   } catch (error) {
     res.status(400).json({
@@ -137,27 +117,22 @@ exports.getHouseDetails = async (req, res, next) => {
   }
 };
 
-exports.updateHouse = async (req, res, next) => {
+exports.updateHotel = async (req, res, next) => {
   try {
     console.log(req.body);
     // console.log(req?.files)
 
     const { id } = req.params;
 
-    const updateHouse = {
+    const updateHotel = {
       bedRoomInfo: req.body.bedRoomInfo,
       floorLevel: req.body.floorLevel,
       division: req.body.division,
       district: req.body.district,
       upazila: req.body.upazila,
       totalRentRoom: req.body.totalRentRoom,
-      spaceSize: req.body.spaceSize,
-      commonBathRoom: req.body.commonBathRoom,
       attachedBathRoom: req.body.attachedBathRoom,
       balcony: req.body.balcony,
-      propertyCondition: req.body.propertyCondition,
-      facing: req.body.facing,
-      availableFrom: req.body.availableFrom,
       rentPriceTitle: req.body.rentPriceTitle,
       rentPrice: req.body.rentPrice,
       deposit: req.body.deposit,
@@ -168,45 +143,43 @@ exports.updateHouse = async (req, res, next) => {
       furnishing: req.body.furnishing,
       gasSupply: req.body.gasSupply,
       ccTvCamera: req.body.ccTvCamera,
-      storeRoom: req.body.storeRoom,
       lift: req.body.lift,
       waterSupply: req.body.waterSupply,
       securityGuard: req.body.securityGuard,
       ipsConnection: req.body.ipsConnection,
       parkingSpace: req.body.parkingSpace,
       floorType: req.body.floorType,
-      categoryName: req.body.categoryName,
-      houseDetailsAddress: req.body.houseDetailsAddress,
+      hotelDetailsAddress: req.body.houseDetailsAddress,
     };
 
-    const result = await House.updateOne(
+    const result = await Hotel.updateOne(
       { _id: id },
-      { $set: updateHouse },
+      { $set: updateHotel },
       { runValidators: true }
     );
     res.status(200).json({
       status: "success",
-      message: "House updated Successfully",
+      message: "Hotel updated Successfully",
       data: result,
     });
   } catch (error) {
     res.status(400).json({
       status: "failed",
-      message: "House not updated",
+      message: "Hotel not updated",
       error: error.message,
     });
   }
 };
 
-exports.deleteHouse = async (req, res, next) => {
+exports.deleteHotel = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const result = await House.findById({ _id: id });
+    const result = await Hotel.findById({ _id: id });
 
-    const houseImgData = result?.houseImage.map((img) => img.split("\\")[2]);
+    const hotelImgData = result?.houseImage.map((img) => img.split("\\")[2]);
 
     Promise.all(
-      houseImgData.map(
+      hotelImgData.map(
         (img) =>
           new Promise(() => {
             try {
@@ -221,7 +194,7 @@ exports.deleteHouse = async (req, res, next) => {
       )
     );
 
-    const house = await House.findByIdAndDelete({ _id: id });
+    const house = await Hotel.findByIdAndDelete({ _id: id });
 
     res.status(200).json({
       status: "success",

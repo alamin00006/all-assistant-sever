@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 // Schema Design
-const houseSchema = mongoose.Schema(
+const hotelSchema = mongoose.Schema(
   {
     bedRoomInfo: {
       type: Number,
@@ -40,39 +40,6 @@ const houseSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-
-    spaceSize: {
-      type: Number,
-      required: true,
-      min: [1, "Space Size Info can't be negative"],
-      validate: {
-        validator: (value) => {
-          const isInteger = Number.isInteger(value);
-          if (isInteger) {
-            return true;
-          } else {
-            return false;
-          }
-        },
-      },
-      message: "Space Size Info must be an Integer",
-    },
-    commonBathRoom: {
-      type: Number,
-      min: [0, "Common Bath Room Info can't be negative"],
-      validate: {
-        validator: (value) => {
-          const isInteger = Number.isInteger(value);
-          if (isInteger) {
-            return true;
-          } else {
-            return false;
-          }
-        },
-      },
-      message: "Space Size Info must be an Integer",
-      default: "N/A",
-    },
     attachedBathRoom: {
       type: Number,
       min: [0, "Attached Bath Room Info can't be negative"],
@@ -103,28 +70,8 @@ const houseSchema = mongoose.Schema(
           }
         },
       },
-      message: "Space Size Info must be an Integer",
+      message: "Balcony Info must be an Integer",
       default: "N/A",
-    },
-    propertyCondition: {
-      type: String,
-      required: true,
-      enum: {
-        values: ["Renovated", "Brand New"],
-        message: "Property Condition can't be {VALUE}",
-      },
-    },
-    facing: {
-      type: String,
-      required: true,
-      enum: {
-        values: ["East", "West", "North", "South"],
-        message: "facing can't be {VALUE}",
-      },
-    },
-    availableFrom: {
-      type: String,
-      required: true,
     },
     rentPriceTitle: {
       type: String,
@@ -134,7 +81,6 @@ const houseSchema = mongoose.Schema(
         message: "Rent Price Title can't be {VALUE}",
       },
     },
-
     rentPrice: {
       type: Number,
       required: true,
@@ -231,14 +177,6 @@ const houseSchema = mongoose.Schema(
         message: "CCTV Camera can't be {VALUE}",
       },
     },
-    storeRoom: {
-      type: String,
-      required: true,
-      enum: {
-        values: ["Yes", "No"],
-        message: "Store Room can't be {VALUE}",
-      },
-    },
     lift: {
       type: String,
       required: true,
@@ -288,15 +226,11 @@ const houseSchema = mongoose.Schema(
       },
     },
 
-    categoryName: {
+    hotelDetailsAddress: {
       type: String,
       required: true,
     },
-    houseDetailsAddress: {
-      type: String,
-      required: true,
-    },
-    houseImage: {
+    hotelImage: {
       type: Array,
       required: true,
     },
@@ -307,6 +241,6 @@ const houseSchema = mongoose.Schema(
 );
 
 // Model
-const House = mongoose.model("House", houseSchema);
+const Hotel = mongoose.model("Hotel", hotelSchema);
 
-module.exports = House;
+module.exports = Hotel;

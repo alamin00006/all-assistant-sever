@@ -9,15 +9,14 @@ exports.createUser = async (req, res) => {
     if (user) {
       return res.status(401).json({
         status: "fail",
-        message:
-          "দুঃখিত এই ইমেইল দিয়ে অলরেডি আমাদের ডাটাবেজে একটি অ্যাকাউন্ট আছে আপনি দয়া করে অন্য ইমেইল দিয়ে একাউন্ট করুন !",
+        message: "Sorry This Email Already Exist !",
       });
     }
     const result = await User.create(req.body);
 
     res.status(200).json({
       status: "success",
-      message: "ধন্যবাদ একাউন্ট করার জন্য",
+      message: "Thanks for Created account",
       data: result,
     });
   } catch (error) {
@@ -44,8 +43,7 @@ exports.createLogin = async (req, res) => {
     if (!user) {
       return res.status(401).json({
         status: "fail",
-        message:
-          "দুঃখিত আমরা এই ইমেইল দিয়ে কোন অ্যাকাউন্ট আমাদের ডাটাবেজে খুঁজে পাইনি দয়া করে আপনি একাউন্ট করুন !",
+        message: "Sorry user not Found, Please Register!",
       });
     }
 
@@ -53,7 +51,7 @@ exports.createLogin = async (req, res) => {
     if (!isValidPassword) {
       return res.status(403).json({
         status: "fail",
-        message: "দুঃখিত আপনি ইমেইল অথবা পাসওয়ার্ড ভুল দিয়েছেন",
+        message: "Sorry your email or password worng ",
       });
     }
     const token = generateToken(user);
@@ -61,7 +59,7 @@ exports.createLogin = async (req, res) => {
 
     res.status(200).json({
       status: "success",
-      message: "ধন্যবাদ লগইন হওয়ার জন্য",
+      message: "Thanks For Login",
       data: {
         user: others,
         token,
@@ -70,7 +68,7 @@ exports.createLogin = async (req, res) => {
   } catch (error) {
     res.status(400).json({
       status: "failed",
-      message: "দুঃখিত আমরা আপনার অ্যাকাউন্টটি খুঁজে পাইনি",
+      message: "Sorry user not found",
       error: error.message,
     });
   }
