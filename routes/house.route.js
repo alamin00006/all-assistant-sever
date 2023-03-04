@@ -11,9 +11,10 @@ router
   .post(houseFile, houseController.createHouse);
 
 // router.route("/:id").patch(houseController.updateProduct);
-router.route("/:id").get(houseController.getHouseDetails);
-
+router
+  .route("/:id")
+  .get(houseController.getHouseDetails)
+  .delete(houseController.deleteHouse);
 //   // router.route('/').get(productController.getAllProductsManage)
-//   .delete(houseController.deleteProduct);
 
 module.exports = router;

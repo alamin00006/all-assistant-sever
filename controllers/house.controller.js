@@ -87,7 +87,7 @@ exports.getHouses = async (req, res, next) => {
         message: "data get Success",
         data: products,
       });
-    } else {
+    } else if ((categoryName, rentPrice, totalRentRoom)) {
       const products = await House.find({})
         .where({
           categoryName: categoryName,
@@ -95,6 +95,14 @@ exports.getHouses = async (req, res, next) => {
         .where("rentPrice")
         .gte(rentPrice)
         .where({ totalRentRoom: totalRentRoom });
+
+      res.status(200).json({
+        status: "success",
+        message: "data get Success",
+        data: products,
+      });
+    } else {
+      const products = await House.find({});
 
       res.status(200).json({
         status: "success",
@@ -133,33 +141,37 @@ exports.getHouseDetails = async (req, res, next) => {
 exports.deleteHouse = async (req, res, next) => {
   try {
     const { id } = req.params;
-    // const imageData = req.body.image[0].split("\\")[2];
+    const result = await House.findById({ _id: id });
 
-    fs.readdir(dirPath, (err, files) => {
-      const fileData = files.find((item) => item === imageData);
+    const houseImgData = result?.houseImage.map((img) => img.split("\\")[2]);
 
-      fs.stat(`./public/uploads/${fileData}`, function (err, stats) {
-        if (err) {
-          return;
-        }
+    Promise.all(
+      houseImgData.map(
+        (img) =>
+          new Promise(() => {
+            try {
+              fs.unlink(`./public/uploads/${img}`, function (err) {
+                console.log();
+                if (err) return;
+              });
+            } catch (err) {
+              console.log(err);
+            }
+          })
+      )
+    );
 
-        fs.unlink(`./public/uploads/${fileData}`, function (err) {
-          if (err) return;
-        });
-      });
-    });
-
-    const result = await Product.findByIdAndDelete({ _id: id });
+    const house = await House.findByIdAndDelete({ _id: id });
 
     res.status(200).json({
       status: "success",
       message: "delete Successfully",
-      data: result,
+      data: house,
     });
   } catch (error) {
     res.status(400).json({
       status: "failed",
-      message: "data not updated",
+      message: "data not delete",
       error: error.message,
     });
   }
