@@ -9,6 +9,7 @@ router.route("/signup").post(userController.createUser);
 router.route("/login").post(userController.createLogin);
 
 router.route("/me").get(verifyToken, userController.getMe);
+router.route("/").get(verifyToken, userController.allUser);
 // .get(writerController.getWriters)
 
 // router.route('/:id').patch(productController.updateProduct)

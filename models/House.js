@@ -288,16 +288,9 @@ const houseSchema = mongoose.Schema(
       },
     },
 
-    category: {
-      categoryName: {
-        type: String,
-        required: true,
-      },
-      category_id: {
-        type: ObjectId,
-        ref: "Category",
-        required: true,
-      },
+    categoryName: {
+      type: String,
+      required: true,
     },
     houseDetailsAddress: {
       type: String,

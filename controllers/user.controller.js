@@ -97,7 +97,7 @@ exports.allUser = async (req, res) => {
   try {
     // const email =  req?.user?.email
     const user = await User.find({});
-    //  const {password:pwd2, ...others} = user?.toObject();
+
     res.status(200).json({
       status: "success",
       data: user,

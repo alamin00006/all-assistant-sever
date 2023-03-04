@@ -1,5 +1,4 @@
 const House = require("../models/House");
-// const Category = require("../models/Category");
 const fs = require("fs");
 const path = require("path");
 const dirPath = path.join(__dirname, "../public/uploads");
@@ -7,8 +6,6 @@ const dirPath = path.join(__dirname, "../public/uploads");
 exports.createHouse = async (req, res) => {
   try {
     const imgPath = req?.files?.houseImage?.map((img) => img.path);
-    const categoryParse = JSON.parse(req.body.category);
-
     const house = new House({
       bedRoomInfo: req.body.bedRoomInfo,
       floorLevel: req.body.floorLevel,
@@ -40,22 +37,11 @@ exports.createHouse = async (req, res) => {
       ipsConnection: req.body.ipsConnection,
       parkingSpace: req.body.parkingSpace,
       floorType: req.body.floorType,
+      categoryName: req.body.categoryName,
 
-      category: {
-        categoryName: categoryParse.categoryName,
-        category_id: categoryParse.category_id,
-      },
       houseDetailsAddress: req.body.houseDetailsAddress,
       houseImage: imgPath,
     });
-
-    // in Category product Push start
-
-    //  const {_id:productId, category} = product;
-    //  await Category.updateOne({_id:category.
-    //     category_id},
-    //     {$push:{products:productId}})
-    // in Category Product push end
 
     const result = await house.save();
 
@@ -75,22 +61,41 @@ exports.createHouse = async (req, res) => {
 
 exports.getHouses = async (req, res, next) => {
   try {
-    const { division, district, upazila } = req.query;
-    // console.log(req.query);
+    const {
+      division,
+      district,
+      upazila,
+      categoryName,
+      rentPrice,
+      totalRentRoom,
+    } = req.query;
+    console.log(req.query);
 
-    if (division || district || upazila) {
-      const products = await House.find(
-        { division: division },
-        { district: district },
-        { upazila: upazila }
-      );
+    if ((division, district, upazila)) {
+      const query =
+        ({ division: division }, { district: district }, { upazila: upazila });
+      const products = await House.find(query)
+        .where({
+          categoryName: categoryName,
+        })
+        .where("rentPrice")
+        .gte(rentPrice)
+        .where({ totalRentRoom: totalRentRoom });
+
       res.status(200).json({
         status: "success",
         message: "data get Success",
         data: products,
       });
     } else {
-      const products = await House.find({});
+      const products = await House.find({})
+        .where({
+          categoryName: categoryName,
+        })
+        .where("rentPrice")
+        .gte(rentPrice)
+        .where({ totalRentRoom: totalRentRoom });
+
       res.status(200).json({
         status: "success",
         message: "data get Success",
@@ -120,6 +125,41 @@ exports.getHouseDetails = async (req, res, next) => {
     res.status(400).json({
       status: "failed",
       message: "data not found",
+      error: error.message,
+    });
+  }
+};
+
+exports.deleteHouse = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    // const imageData = req.body.image[0].split("\\")[2];
+
+    fs.readdir(dirPath, (err, files) => {
+      const fileData = files.find((item) => item === imageData);
+
+      fs.stat(`./public/uploads/${fileData}`, function (err, stats) {
+        if (err) {
+          return;
+        }
+
+        fs.unlink(`./public/uploads/${fileData}`, function (err) {
+          if (err) return;
+        });
+      });
+    });
+
+    const result = await Product.findByIdAndDelete({ _id: id });
+
+    res.status(200).json({
+      status: "success",
+      message: "delete Successfully",
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "failed",
+      message: "data not updated",
       error: error.message,
     });
   }
