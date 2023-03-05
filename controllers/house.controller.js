@@ -139,9 +139,6 @@ exports.getHouseDetails = async (req, res, next) => {
 
 exports.updateHouse = async (req, res, next) => {
   try {
-    // console.log(req.body);
-    // console.log(req?.files)
-
     const { id } = req.params;
 
     const updateHouse = {

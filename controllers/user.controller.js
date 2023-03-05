@@ -93,7 +93,6 @@ exports.getMe = async (req, res) => {
 };
 exports.allUser = async (req, res) => {
   try {
-    // const email =  req?.user?.email
     const user = await User.find({});
 
     res.status(200).json({
@@ -111,9 +110,6 @@ exports.allUser = async (req, res) => {
 
 exports.updateuser = async (req, res, next) => {
   try {
-    console.log(req.body);
-    // console.log(req?.files)
-
     const { id } = req.params;
 
     const updateUser = {
