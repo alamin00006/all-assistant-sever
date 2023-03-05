@@ -203,7 +203,7 @@ exports.deleteHouse = async (req, res, next) => {
     const { id } = req.params;
     const result = await House.findById({ _id: id });
 
-    const houseImgData = result?.houseImage.map((img) => img.split("\\")[2]);
+    const houseImgData = result?.image.map((img) => img.split("\\")[2]);
 
     Promise.all(
       houseImgData.map(
