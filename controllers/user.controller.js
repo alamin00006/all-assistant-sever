@@ -108,3 +108,33 @@ exports.allUser = async (req, res) => {
     });
   }
 };
+
+exports.updateuser = async (req, res, next) => {
+  try {
+    console.log(req.body);
+    // console.log(req?.files)
+
+    const { id } = req.params;
+
+    const updateUser = {
+      role: req.body?.role,
+    };
+
+    const result = await User.updateOne(
+      { _id: id },
+      { $set: updateUser },
+      { runValidators: true }
+    );
+    res.status(200).json({
+      status: "success",
+      message: "User updated Successfully",
+      data: result,
+    });
+  } catch (error) {
+    res.status(400).json({
+      status: "failed",
+      message: "User not updated",
+      error: error.message,
+    });
+  }
+};

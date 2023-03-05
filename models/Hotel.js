@@ -230,7 +230,7 @@ const hotelSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    hotelImage: {
+    image: {
       type: Array,
       required: true,
     },

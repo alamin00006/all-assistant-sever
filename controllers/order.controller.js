@@ -20,7 +20,7 @@ exports.getAllOrders = async (req, res, next) => {
 
 exports.createOrder = async (req, res) => {
   try {
-    // console.log(req.body)
+    console.log(req.body);
 
     const order = new Order(req.body);
 

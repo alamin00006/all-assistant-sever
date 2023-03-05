@@ -5,7 +5,7 @@ const dirPath = path.join(__dirname, "../public/uploads");
 
 exports.createHouse = async (req, res) => {
   try {
-    const imgPath = req?.files?.houseImage?.map((img) => img.path);
+    const imgPath = req?.files?.image?.map((img) => img.path);
     const house = new House({
       bedRoomInfo: req.body.bedRoomInfo,
       floorLevel: req.body.floorLevel,
@@ -39,7 +39,7 @@ exports.createHouse = async (req, res) => {
       floorType: req.body.floorType,
       categoryName: req.body.categoryName,
       houseDetailsAddress: req.body.houseDetailsAddress,
-      houseImage: imgPath,
+      image: imgPath,
     });
 
     const result = await house.save();
@@ -139,7 +139,7 @@ exports.getHouseDetails = async (req, res, next) => {
 
 exports.updateHouse = async (req, res, next) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
     // console.log(req?.files)
 
     const { id } = req.params;

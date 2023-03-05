@@ -296,7 +296,7 @@ const houseSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    houseImage: {
+    image: {
       type: Array,
       required: true,
     },

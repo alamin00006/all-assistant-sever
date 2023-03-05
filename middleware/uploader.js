@@ -20,7 +20,7 @@ const uploader = multer({
     if (supportedImage.test(extension)) {
       cb(null, true);
     } else {
-      cb(new Error("must be png / jpg / pdf image"));
+      cb(new Error("must be png / jpg / image"));
     }
   },
   limits: {
@@ -28,6 +28,6 @@ const uploader = multer({
   },
 });
 
-const houseFile = uploader.fields([{ name: "houseImage", maxCount: 10 }]);
+const houseFile = uploader.fields([{ name: "image", maxCount: 10 }]);
 
 module.exports = houseFile;

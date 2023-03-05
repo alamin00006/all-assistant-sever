@@ -5,7 +5,8 @@ const dirPath = path.join(__dirname, "../public/uploads");
 
 exports.createHotel = async (req, res) => {
   try {
-    const imgPath = req?.files?.hotelImage?.map((img) => img.path);
+    const imgPath = req?.files?.image?.map((img) => img?.path);
+
     const hotel = new Hotel({
       bedRoomInfo: req.body.bedRoomInfo,
       floorLevel: req.body.floorLevel,
@@ -31,8 +32,8 @@ exports.createHotel = async (req, res) => {
       ipsConnection: req.body.ipsConnection,
       parkingSpace: req.body.parkingSpace,
       floorType: req.body.floorType,
-      hotelDetailsAddress: req.body.houseDetailsAddress,
-      hotelImage: imgPath,
+      hotelDetailsAddress: req.body.hotelDetailsAddress,
+      image: imgPath,
     });
 
     const result = await hotel.save();
@@ -54,7 +55,6 @@ exports.createHotel = async (req, res) => {
 exports.getHotels = async (req, res, next) => {
   try {
     const { division, district, upazila, rentPrice, totalRentRoom } = req.query;
-    console.log(req.query);
 
     if ((division, district, upazila)) {
       const query =
@@ -119,9 +119,6 @@ exports.getHotelDetails = async (req, res, next) => {
 
 exports.updateHotel = async (req, res, next) => {
   try {
-    console.log(req.body);
-    // console.log(req?.files)
-
     const { id } = req.params;
 
     const updateHotel = {
@@ -176,7 +173,7 @@ exports.deleteHotel = async (req, res, next) => {
     const { id } = req.params;
     const result = await Hotel.findById({ _id: id });
 
-    const hotelImgData = result?.houseImage.map((img) => img.split("\\")[2]);
+    const hotelImgData = result?.image.map((img) => img.split("\\")[2]);
 
     Promise.all(
       hotelImgData.map(
@@ -194,12 +191,12 @@ exports.deleteHotel = async (req, res, next) => {
       )
     );
 
-    const house = await Hotel.findByIdAndDelete({ _id: id });
+    const hotel = await Hotel.findByIdAndDelete({ _id: id });
 
     res.status(200).json({
       status: "success",
       message: "delete Successfully",
-      data: house,
+      data: hotel,
     });
   } catch (error) {
     res.status(400).json({

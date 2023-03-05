@@ -3,11 +3,7 @@ const mongoose = require("mongoose");
 const orderSchema = mongoose.Schema(
   {
     orderHouse: {
-      type: Array,
-      required: true,
-    },
-    user: {
-      type: String,
+      type: Object,
       required: true,
     },
     name: {
@@ -16,7 +12,7 @@ const orderSchema = mongoose.Schema(
     },
 
     phone: {
-      type: String,
+      type: Number,
       required: [true, "Please Provide Your Phone Number"],
     },
   },
