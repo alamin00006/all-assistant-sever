@@ -11,13 +11,13 @@ const options = {
   socketTimeoutMS: 45000,
   family: 4,
 };
-const uri = process.env.DATABASE;
+const uri = `mongodb+srv://${process.env.USER_NAME}:${process.env.PASSWORD}@allassistant.23iq4ty.mongodb.net/allassistant?retryWrites=true&w=majority`;
 
 const connectWithDB = () => {
   mongoose
     .connect(uri, options)
     .then(() => {
-      console.log("database connection succefull");
+      console.log("database connection succefully");
     })
     .catch((err) => {
       console.log(err);

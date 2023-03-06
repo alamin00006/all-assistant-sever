@@ -123,7 +123,7 @@ const houseSchema = mongoose.Schema(
       },
     },
     availableFrom: {
-      type: String,
+      type: Date,
       required: true,
     },
     rentPriceTitle: {
