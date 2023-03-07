@@ -208,11 +208,14 @@ exports.deleteHouse = async (req, res, next) => {
           new Promise(() => {
             try {
               fs.unlink(`./public/uploads/${img}`, function (err) {
-                console.log();
                 if (err) return;
               });
             } catch (err) {
-              console.log(err);
+              res.status(400).json({
+                status: "failed",
+                message: "image not delete",
+                error: err.message,
+              });
             }
           })
       )
