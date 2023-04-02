@@ -10,11 +10,15 @@ const userRoute = require("./routes/user.route");
 const houseRoute = require("./routes/house.route");
 const hotelRoute = require("./routes/hotel.route");
 const orderRoute = require("./routes/order.route");
+const shifingCityOrder = require("./routes/shiftingOrder.route");
+const shifingOutCityOrder = require("./routes/shiftingOutOrder.route");
 
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/house", houseRoute);
 app.use("/api/v1/hotel", hotelRoute);
 app.use("/api/v1/order", orderRoute);
+app.use("/api/v1/shifting-city", shifingCityOrder);
+app.use("/api/v1/shifting-out-city", shifingOutCityOrder);
 
 app.get("/", (req, res) => {
   res.send("Route is Working");
