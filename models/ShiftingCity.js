@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 // Schema Design
-const shiftingOutOrderSchema = mongoose.Schema(
+const shiftingOrderSchema = mongoose.Schema(
   {
     city: {
       type: String,
@@ -39,9 +39,6 @@ const shiftingOutOrderSchema = mongoose.Schema(
 );
 
 // Model
-const ShiftingOutCity = mongoose.model(
-  "ShiftingOutCity",
-  shiftingOutOrderSchema
-);
+const ShiftingCity = mongoose.model("ShiftingCity", shiftingOrderSchema);
 
-module.exports = ShiftingOutCity;
+module.exports = ShiftingCity;
